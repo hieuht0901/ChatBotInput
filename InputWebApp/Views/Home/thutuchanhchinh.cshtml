@@ -1,0 +1,430 @@
+﻿@model Domain.ResponseEntities.ChiTietThuTucHanhChinh;
+
+<section id="basic-form-layouts">
+    <div class="row justify-content-md-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title" id="basic-layout-colored-form-control">Thông tin thủ tục hành chính</h4>
+                    <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                    <div class="heading-elements">
+                        <ul class="list-inline mb-0">
+                            <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                            <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                            <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                            <li><a data-action="close"><i class="ft-x"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-content collapse show">
+                    <div class="card-body">
+                        <form class="form" id="mForm">
+                            <div class="form-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="txtIdx">Idx</label>
+                                            <input class="form-control border-primary" type="text" placeholder="Idx" id="txtIdx" value="@Model.Idx" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label for="selectNhomThuTuc">Nhóm thủ tục</label>
+                                            <select id="selectNhomThuTuc"
+                                                    name="budget"
+                                                    class="form-control">
+                                                <option value="-1">Chọn nhóm</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="txtTenThuTuc">Tên thủ tục</label>
+                                    <textarea id="txtTenThuTuc" rows="5" class="form-control border-primary" name="txtTenThuTuc" placeholder="Tên thủ tục hành chính">@Model.TenThuTuc</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtResponse">Response</label>
+                                    <textarea id="txtResponse" rows="5" class="form-control border-primary" name="txtResponse" placeholder="Response">@Model.Response</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtResponse2">Response 2</label>
+                                    <textarea id="txtResponse2" rows="5" class="form-control border-primary" name="txtResponse2" placeholder="Response 2">@Model.Response</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtLink">Link</label>
+                                    <input class="form-control border-primary" type="url" placeholder="http://" id="txtLink" value="@Model.LinkResponse">
+                                </div>
+                            </div>
+                            <div class="form-actions right">
+                                <button type="button" class="btn btn-warning mr-1">
+                                    <i class="ft-x"></i> Reset
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-check-square-o"></i> Save
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-md-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title" id="basic-layout-colored-form-control">Thông tin chi tiết thủ tục</h4>
+                    <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                    <div class="heading-elements">
+                        <ul class="list-inline mb-0">
+                            <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                            <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                            <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                            <li><a data-action="close"><i class="ft-x"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-content collapse show">
+                    <div class="card-body">
+                        <form class="form form-horizontal" id="compactForm">
+                            <div class="form-body">
+                                <h4 class="form-section"><i class="ft-clipboard"></i>Thông tin hiển thị trên web</h4>
+                                <div class="form-group row">
+                                    <label class="col-md-3 label-control" style="font-weight: bold">
+                                        Nơi tiếp nhận:
+                                    </label>
+                                    <div class="col-md-9">
+                                        @Html.Raw(Model.DiaDiemTiepNhan)
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 label-control" style="font-weight: bold">
+                                        Thời gian tiếp nhận:
+                                    </label>
+                                    <div class="col-md-9">
+                                        @Html.Raw(Model.ThoiGianTiepNhan)
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 label-control" style="font-weight: bold">
+                                        Thời hạn giải quyết:
+                                    </label>
+                                    <div class="col-md-9">
+                                        @Html.Raw(Model.ThoiGianGiaiQuyet)
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 label-control" style="font-weight: bold">
+                                        Lệ phí:
+                                    </label>
+                                    <div class="col-md-9">
+                                        @Html.Raw(Model.LePhi)
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 label-control" style="font-weight: bold">Cách thức thực hiện</label>
+                                    <div class="col-md-9">
+                                        @Html.Raw(Model.CachThucThucHien)
+                                    </div>
+                                </div>
+                                <h4 class="form-section"><i class="ft-user"></i>Thông tin rút gọn</h4>
+                                <div class="form-group row">
+                                    <label class="col-md-3 label-control" style="font-weight: bold">
+                                        Nơi tiếp nhận:
+                                    </label>
+                                    <div class="col-md-9">
+                                        <input type="text" id="txtNoiTiepNhan" class="form-control" placeholder="Nơi tiếp nhận" value="@Model.DiaDiemTiepNhanShort">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 label-control" style="font-weight: bold">
+                                        Thời gian tiếp nhận:
+                                    </label>
+                                    <div class="col-md-9">
+                                        <input type="text" id="txtThoiGianTiepNhan" class="form-control" placeholder="Thời gian tiếp nhận" value="@Model.ThoiGianTiepNhanShort">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 label-control" style="font-weight: bold">
+                                        Thời hạn giải quyết:
+                                    </label>
+                                    <div class="col-md-9">
+                                        <input type="text" id="txtThoiHanGiaiQuyet" class="form-control" placeholder="Thời gian giải quyết" value="@Model.ThoiGianGiaiQuyetShort">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 label-control" style="font-weight: bold">
+                                        Lệ phí:
+                                    </label>
+                                    <div class="col-md-9">
+                                        <input type="text" id="txtLePhi" class="form-control" placeholder="Lệ phí" value="@Model.LePhiShort">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 label-control" style="font-weight: bold">Cách thức thực hiện</label>
+                                    <div class="col-md-9">
+                                        <textarea id="txtCachThucThucHien" rows="5" class="form-control"  placeholder="Cách thức thực hiện">@Model.CachThucThucHienShort</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions right">
+                                <button type="button" class="btn btn-warning mr-1">
+                                    <i class="ft-x"></i> Reset
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-check-square-o"></i> Save
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-md-center">
+        <div class="col-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Danh sách câu hỏi</h4>
+                    <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                    <div class="heading-elements">
+                        <ul class="list-inline mb-0">
+                            <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                            <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                            <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                            <li><a data-action="close"><i class="ft-x"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-content collapse show">
+                    <div class="card-body card-dashboard">
+                        <div id="grid" style="max-height: 440px">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(() => {
+
+            const URL = '/api/ThuThuHanhChinh';
+
+            fetch(`${URL}/danhsachnhomthutuc`).then(res => res.json())
+                .then(data => {
+
+                    data.forEach(el => {
+                        const isSelected = ((+'@Model.IdNhomThuTuc') === (+el.id));
+                        const dkm = isSelected ? 'selected' : '';
+                        const optionEl = `<option value="${el.id}" ${dkm}>${el.tenNhom}</option>`;
+                        document.getElementById('selectNhomThuTuc').insertAdjacentHTML('beforeend', optionEl);
+                    })
+                })
+                .catch(err => {
+
+                })
+
+            function sendRequest(url, method = 'GET', data) {
+                const d = $.Deferred();
+
+                $.ajax(url, {
+                    method,
+                    data,
+                    cache: false,
+                    xhrFields: { withCredentials: true },
+                }).done((result) => {
+                    d.resolve(method === 'GET' ? result.data : result);
+                }).fail((xhr) => {
+                    d.reject(xhr.responseJSON ? xhr.responseJSON.Message : xhr.statusText);
+                });
+
+                return d.promise();
+            }
+
+            const ordersStore = new DevExpress.data.CustomStore({
+                key: 'id',
+                load(loadOptions) {
+                    const deferred = $.Deferred();
+                    const args = {};
+
+                    [
+                        'skip',
+                        'take',
+                        'requireTotalCount',
+                        'requireGroupCount',
+                        'sort',
+                        'filter',
+                        'totalSummary',
+                        'group',
+                        'groupSummary',
+                    ].forEach((i) => {
+                        if (i in loadOptions && isNotEmpty(loadOptions[i])) {
+                            args[i] = JSON.stringify(loadOptions[i]);
+                        }
+                    });
+                    $.ajax({
+                        url: `${URL}/danhsachcauhoi/${@Model.ID}`,
+                        dataType: 'json',
+                        data: args,
+                        success(result) {
+                            console.log(result);
+                            deferred.resolve(result);
+                        },
+                        error() {
+                            deferred.reject('Data Loading Error');
+                        },
+                    });
+
+                    return deferred.promise();
+                },
+                insert(values) {
+                    console.log({ ...values,  idThuTuc: @Model.ID, id: null});
+                    const d = $.Deferred();
+
+                    $.ajax(`${URL}/themoicauhoi`, {
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ ...values, idThuTuc: @Model.ID}),
+                        cache: false,
+                        xhrFields: { withCredentials: true },
+                    }).done((result) => {
+                        console.log(result)
+                        d.resolve(result);
+                    }).fail((xhr) => {
+                        d.reject(xhr.responseText ? xhr.responseText : xhr.statusText);
+                    });
+
+                    return d.promise();
+                },
+                update(key, values) {
+                    const d = $.Deferred();
+
+                    $.ajax(`${URL}/capnhatcauhoi`, {
+                        method: 'PUT',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ ...values, id: key }),
+                        cache: false,
+                        xhrFields: { withCredentials: true },
+                    }).done((result) => {
+                        console.log(result)
+                        d.resolve(result);
+                    }).fail((xhr) => {
+                        d.reject(xhr.responseText ? xhr.responseText : xhr.statusText);
+                    });
+
+                    return d.promise();
+                },
+            });
+
+            const dataGrid = $('#grid').dxDataGrid({
+                dataSource: ordersStore,
+                showColumnLines: true,
+                showRowLines: true,
+                rowAlternationEnabled: true,
+                showBorders: true,
+                filterRow: {
+                    visible: false,
+                },
+                searchPanel: {
+                    visible: true,
+                    width: 350,
+                    placeholder: 'Tìm tên thủ tục',
+                },
+                sorting: { mode: 'none' },
+                paging: {
+                    pageSize: 10,
+                },
+                editing: {
+                    refreshMode: 'reshape',
+                    mode: 'row',
+                    allowAdding: true,
+                    allowUpdating: true,
+                },
+                columns: [
+                    {
+                        dataField: 'noiDung',
+                        caption: 'Nội dung câu hỏi',
+                        //headerFilter: {
+                        //    allowSearch: true,
+                        //},
+                    },
+                    {
+                        type: 'buttons',
+                        caption: 'Thao tác',
+                        width: 110,
+                        buttons: ['edit', 'delete'],
+                    },
+                ],
+            }).dxDataGrid('instance');
+
+            document.getElementById('compactForm').addEventListener('submit', evt => {
+                evt.preventDefault();
+                const txtNoiTiepNhan = document.getElementById('txtNoiTiepNhan');
+                const txtThoiGianTiepNhan = document.getElementById('txtThoiGianTiepNhan');
+                const txtThoiHanGiaiQuyet = document.getElementById('txtThoiHanGiaiQuyet');
+                const txtLePhi = document.getElementById('txtLePhi');
+                const txtCachThucThucHien = document.getElementById('txtCachThucThucHien');
+                fetch(`${URL}/capnhatthutuchanhchinhcompact/${@Model.IdCompact}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: '@Model.IdCompact',
+                        diaDiemTiepNhanShort: txtNoiTiepNhan.value,
+                        thoiGianTiepNhanShort: txtThoiGianTiepNhan.value,
+                        thoiGianGiaiQuyetShort: txtThoiHanGiaiQuyet.value,
+                        lePhiShort: txtLePhi.value,
+                        cachThucThucHienShort: txtCachThucThucHien.value
+                    })
+                }).then(res => {
+                    if (res.ok) {
+                        return res.json()
+                    }
+                }).then(data => {
+                    alert('Chỉnh sửa thành công')
+                }).catch(err => {
+                    alert(err.message);
+                })
+            });
+            document.getElementById('mForm').addEventListener('submit', evt => {
+                evt.preventDefault();
+                const txtIdx = document.getElementById('txtIdx');
+                const selectNhomThuTuc = document.getElementById('selectNhomThuTuc');
+                const txtTenThuTuc = document.getElementById('txtTenThuTuc');
+                const txtResponse = document.getElementById('txtResponse');
+                const txtResponse2 = document.getElementById('txtResponse2');
+                const txtLink = document.getElementById('txtLink');
+                fetch(`${URL}/capnhatthutuchanhchinh/${@Model.ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: '@Model.ID',
+                        idx: txtIdx.value,
+                        idNhomThuTuc: selectNhomThuTuc.value,
+                        tenThuTuc: txtTenThuTuc.value,
+                        response: txtResponse.value,
+                        shortResponse: txtResponse2.value,
+                        linkResponse: txtLink.value,
+                    })
+                }).then(res => {
+                    if (res.ok) {
+                        return res.json()
+                    }
+                }).then(data => {
+                    alert('Chỉnh sửa thành công')
+                }).catch(err => {
+                    alert(err.message);
+                })
+            })
+        });
+    </script>
+}

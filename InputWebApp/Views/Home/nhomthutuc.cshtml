@@ -1,0 +1,141 @@
+﻿<section id="configuration">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Danh sách nhóm thủ tục hành chính</h4>
+                    <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                    <div class="heading-elements">
+                        <ul class="list-inline mb-0">
+                            <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                            <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                            <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                            <li><a data-action="close"><i class="ft-x"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-content collapse show">
+                    <div class="card-body card-dashboard">
+                        <div id="grid" style="height: 550px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(() => {
+            const URL = '/api/ThuThuHanhChinh/danhsachnhomthutuc';
+
+            const ordersStore = new DevExpress.data.CustomStore({
+                key: 'id',
+                load(loadOptions) {
+                    const deferred = $.Deferred();
+                    const args = {};
+
+                    [
+                        'skip',
+                        'take',
+                        'requireTotalCount',
+                        'requireGroupCount',
+                        'sort',
+                        'filter',
+                        'totalSummary',
+                        'group',
+                        'groupSummary',
+                    ].forEach((i) => {
+                        if (i in loadOptions && isNotEmpty(loadOptions[i])) {
+                            args[i] = JSON.stringify(loadOptions[i]);
+                        }
+                    });
+                    $.ajax({
+                        url: URL,
+                        dataType: 'json',
+                        data: args,
+                        success(result) {
+                            console.log(result);
+                            deferred.resolve(result);
+                        },
+                        error() {
+                            deferred.reject('Data Loading Error');
+                        },
+                    });
+
+                    return deferred.promise();
+                },
+                insert(values) {
+                    const d = $.Deferred();
+
+                    $.ajax(`${URL}/themmoinhomthutuc`, {
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(values),
+                        cache: false,
+                        xhrFields: { withCredentials: true },
+                    }).done((result) => {
+                        d.resolve(result);
+                    }).fail((xhr) => {
+                        d.reject(xhr.responseText ? xhr.responseText : xhr.statusText);
+                    });
+
+                    return d.promise();
+                },
+                update(key, values) {
+                    const d = $.Deferred();
+
+                    $.ajax(`${URL}/capnhatnhomthutuc/${key}`, {
+                        method: 'PUT',
+                        contentType: 'application/json',
+                        data: JSON.stringify(values),
+                        cache: false,
+                        xhrFields: { withCredentials: true },
+                    }).done((result) => {
+                        d.resolve(result);
+                    }).fail((xhr) => {
+                        d.reject(xhr.responseText ? xhr.responseText : xhr.statusText);
+                    });
+
+                    return d.promise();
+                },
+            });
+
+            const dataGrid = $('#grid').dxDataGrid({
+                dataSource: ordersStore,
+                showColumnLines: true,
+                showRowLines: true,
+                rowAlternationEnabled: true,
+                showBorders: true,
+                //remoteOperations: true,
+                scrolling: {
+                    mode: 'virtual',
+                },
+                searchPanel: {
+                    visible: true,
+                    width: 240,
+                    placeholder: 'Tìm tên thủ tục',
+                },
+                customizeColumns: function (columns) {
+                    columns[0].width = 150;
+                },
+                editing: {
+                    refreshMode: 'reshape',
+                    mode: 'row',
+                    allowAdding: true,
+                    allowUpdating: true
+                },
+                columns: [
+                    {
+                        dataField: 'maNhom',
+                        caption:'Mã nhóm'
+                    },
+                    {
+                        dataField: 'tenNhom',
+                        caption:'Nhóm thủ tục'
+                    },
+                ],
+            }).dxDataGrid('instance');
+        });
+    </script>
+}
