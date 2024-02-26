@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Domain;
+using InputWebApp.DTOs;
 using InputWebApp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Persistence;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace InputWebApp.Controllers
 {
@@ -34,10 +36,6 @@ namespace InputWebApp.Controllers
         }
 
         public IActionResult Privacy()
-        {
-            return View();
-        }
-        public IActionResult Login()
         {
             return View();
         }
@@ -83,19 +81,44 @@ namespace InputWebApp.Controllers
             }
         }
 
+        public async Task<IActionResult> Login()
+        {
+            var curUser = (ClaimsIdentity)User.Identity;
+            var user = curUser != null && curUser.Name != null ? await _userManager.FindByNameAsync(curUser.Name) : null;
+            if (user == null)
+            {
+                return View();
+            }
+
+            return RedirectToAction("Index");
+        }
+
         [HttpPost]
-        public async Task<IActionResult> Login(string username, string password)
+        public async Task<IActionResult> Login(LoginDto dto)
         {
             //login functionality
-            var user = await _userManager.FindByNameAsync(username);
+            var user = await _userManager.FindByNameAsync(dto.Username);
 
             if (user != null)
             {
                 //sign in
-                var signInResult = await _signInManager.PasswordSignInAsync(user, password, false, false);
+                var signInResult = await _signInManager.PasswordSignInAsync(user, dto.Password, false, false);
+
+                if (signInResult.IsLockedOut)
+                {
+                    ViewData["ErrorMessage"] = "Tài khoản đã bị khóa, xin vui lòng liên hệ quản trị viên để mở khóa tài khoản!";
+                    return View();
+                }
+
+                if (!signInResult.Succeeded)
+                {
+                    ViewData["ErrorMessage"] = "Tên tài khoản hoặc mật khẩu không chính xác, vui lòng thử lại!";
+                    return View();
+                }
 
                 if (signInResult.Succeeded)
                 {
+                    //return RedirectToAction("Index", "Home", new { area = "AdminTool" });
                     return RedirectToAction("Index");
                 }
             }

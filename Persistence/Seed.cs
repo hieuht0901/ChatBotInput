@@ -38,8 +38,8 @@ namespace Persistence
                         DisplayName = "host",
                         UserName = "host",
                         Email = "host@email.com",
-                        LockoutEnabled = false,
-                        LockoutEnd = new DateTime(9999,12,31)
+                        LockoutEnabled = true,
+                        LockoutEnd = new DateTime(2000,12,31)
                     }
                 };
 

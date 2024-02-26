@@ -1,0 +1,35 @@
+﻿<ul class="navigation navigation-main"
+    id="main-menu-navigation"
+    data-menu="menu-navigation">
+    @*<li class="navigation-header">
+            <span>General</span><i class="ft-minus"
+                                   data-toggle="tooltip"
+                                   data-placement="right"
+                                   data-original-title="General"></i>
+        </li>*@
+    <li class="nav-item">
+        <a asp-area="" asp-controller="Home" asp-action="Index">
+            <i class="ft-home"></i><span class="menu-title" data-i18n="">Dashboard</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a asp-area="" asp-controller="home" asp-action="nhomthutuc">
+            <i class="ft-home"></i><span class="menu-title" data-i18n="">Danh sách nhóm thủ tục</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a asp-area="" asp-controller="home" asp-action="nhomthutuccon">
+            <i class="ft-home"></i><span class="menu-title" data-i18n="">Danh sách nhóm lĩnh vực</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a asp-area="" asp-controller="home" asp-action="dsthutuchanhchinh">
+            <i class="ft-home"></i><span class="menu-title" data-i18n="">Danh sách thủ tục hành chính</span>
+        </a>
+    </li>
+    @*<li class="nav-item">
+            <a asp-area="" asp-controller="home" asp-action="danhmuc">
+                <i class="ft-home"></i><span class="menu-title" data-i18n="">Danh mục</span>
+            </a>
+        </li>*@
+</ul>

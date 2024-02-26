@@ -1,0 +1,19 @@
+﻿@model InputWebApp.ViewModels.DropdownUserViewModel;
+
+<li class="dropdown dropdown-user nav-item">
+    <a class="dropdown-toggle nav-link dropdown-user-link"
+       href="javascript:void(0)"
+       data-toggle="dropdown">
+        <span class="avatar avatar-online">
+            <img src="~/template-asset/app-assets/images/portrait/small/avatar-s-1.png"
+                 alt="avatar" /><i></i>
+        </span>
+        @*<span class="user-name">@Model.Username</span>*@
+        <span class="user-name">@Model.Username</span>
+    </a>
+    <div class="dropdown-menu dropdown-menu-right">
+        <a class="dropdown-item" href="javascrip:void(0)"><i class="ft-user"></i>Tải khoản</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="/home/logout"><i class="ft-power"></i>Đăng xuất</a>
+    </div>
+</li>
