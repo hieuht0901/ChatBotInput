@@ -1,0 +1,258 @@
+﻿<section id="configuration">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Danh sách người dùng</h4>
+                    <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                    <div class="heading-elements">
+                        <ul class="list-inline mb-0">
+                            <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                            <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                            <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                            <li><a data-action="close"><i class="ft-x"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-content collapse show">
+                    <div class="card-body card-dashboard">
+                        <div id="grid" style="height: 550px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast"></div>
+
+    <!-- Modal reset password-->
+    <div class="modal right fade" id="modalResetPass" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Đổi mật khẩu người dùng <span id="ttcReset"></span></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <form role="form" id="formResetPass">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="tenTruyCapReset" class="form-label">Tên truy cập</label>
+                            <input name="userName" type="text" class="form-control field-input" id="tenTruyCapReset" disabled />
+                        </div>
+                        <div class="form-group">
+                            <label for="matKhauReset" class="form-label">Mật khẩu<span class="text-red"> *</span></label>
+                            <div class="position-relative field-password">
+                                <input name="password" type="password" class="form-control field-input" id="matKhauReset" placeholder="Nhập mật khẩu" autocomplete="off" />
+                                <div class="form-control-position form-control-position-right cursor-pointer">
+                                    <i class="icon-fluent icon_fluent_eye_off_filled showPassword text-gray"></i>
+                                </div>
+                            </div>
+                            <span id="notifi_matKhauReset" class="validation-msg d-none">Vui lòng nhập thông tin!</span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-light" data-dismiss="modal">Hủy bỏ</button>
+                        <button type="submit" class="btn btn-secondary">Lưu</button>
+                    </div>
+                </form>
+            </div><!-- modal-content -->
+        </div><!-- modal-dialog -->
+    </div><!-- modal -->
+</section>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(() => {
+            const URL = '/api/accountapi';
+
+            const toast = $('#toast').dxToast({ displayTime: 600 }).dxToast('instance');
+
+            const ordersStore = new DevExpress.data.CustomStore({
+                key: 'id',
+                load(loadOptions) {
+                    const deferred = $.Deferred();
+                    const args = {};
+
+                    [
+                        'skip',
+                        'take',
+                        'requireTotalCount',
+                        'requireGroupCount',
+                        'sort',
+                        'filter',
+                        'totalSummary',
+                        'group',
+                        'groupSummary',
+                    ].forEach((i) => {
+                        if (i in loadOptions && isNotEmpty(loadOptions[i])) {
+                            args[i] = JSON.stringify(loadOptions[i]);
+                        }
+                    });
+                    $.ajax({
+                        url: `${URL}/getallusers`,
+                        dataType: 'json',
+                        data: args,
+                        success(result) {
+                            console.log(result);
+                            deferred.resolve(result);
+                        },
+                        error() {
+                            deferred.reject('Data Loading Error');
+                        },
+                    });
+
+                    return deferred.promise();
+                },
+                insert(values) {
+                    const d = $.Deferred();
+
+                    $.ajax(`${URL}/createnewaccount`, {
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(values),
+                        cache: false,
+                        xhrFields: { withCredentials: true },
+                    }).done((result) => {
+                        d.resolve(result);
+                        toast.option({ message: 'Thêm mới thành công', type: 'success' });
+                        toast.show();
+                    }).fail((xhr) => {
+                        d.reject(xhr.responseText ? xhr.responseText : xhr.statusText);
+                        toast.option({ message: xhr.responseText ? xhr.responseText : xhr.statusText, type: 'error' });
+                        toast.show();
+                    });
+
+                    return d.promise();
+                },
+                update(key, values) {
+                    const curGrid = $('#grid').dxDataGrid("instance");
+                    const curRow = curGrid.getRowIndexByKey(key);
+                    const curData = curGrid.getVisibleRows()[curRow];
+                    const d = $.Deferred();
+
+                    $.ajax(`${URL}/UpdateAccount`, {
+                        method: 'PUT',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ ...curData.data, ...values }),
+                        cache: false,
+                        xhrFields: { withCredentials: true },
+                    }).done((result) => {
+                        d.resolve(result);
+                        toast.option({ message: 'Cập nhật thành công', type: 'success' });
+                        toast.show();
+                    }).fail((xhr) => {
+                        d.reject(xhr.responseText ? xhr.responseText : xhr.statusText);
+                        toast.option({ message: xhr.responseText ? xhr.responseText : xhr.statusText, type: 'error' });
+                        toast.show();
+                    });
+
+                    return d.promise();
+                },
+            });
+
+            const dataGrid = $('#grid').dxDataGrid({
+                dataSource: ordersStore,
+                showColumnLines: true,
+                showRowLines: true,
+                rowAlternationEnabled: true,
+                showBorders: true,
+                //remoteOperations: true,
+                scrolling: {
+                    mode: 'virtual',
+                },
+                searchPanel: {
+                    visible: true,
+                    width: 240,
+                    placeholder: 'Tìm người dùng',
+                },
+                customizeColumns: function (columns) {
+                    columns[0].width = 150;
+                },
+                editing: {
+                    refreshMode: 'reshape',
+                    mode: 'form',
+                    allowAdding: true,
+                    allowUpdating: true
+                },
+                onEditorPreparing: function (e) {
+                    var rowData = e.row;
+                    if ((e.dataField === "userName" || e.dataField === "password") && !rowData["isNewRow"]) {
+                        e.editorOptions.disabled = true;
+                    }
+                },
+
+                columns: [
+                    {
+                        dataField: 'userName',
+                        caption: 'Tên đăng nhập'
+                    },
+                    {
+                        dataField: 'displayName',
+                        caption: 'Tên đầy đủ'
+                    },
+                    {
+                        dataField: 'email',
+                        caption: 'Email'
+                    },
+                    {
+                        dataField: 'password',
+                        caption: 'Password',
+                        visible: false,
+                        value: '',
+                        editorOptions: {
+                            mode: 'password'
+                        },
+
+                    },
+                    {
+                        type: 'buttons',
+                        width: 110,
+                        buttons: ['edit', {
+                            hint: 'Reset Password',
+                            icon: 'edit',
+                            onClick(e) {
+                                e.event.preventDefault();
+                                console.log(e.row.data);
+                                document.getElementById('tenTruyCapReset').value = e.row.data.userName;
+                                $('#modalResetPass').modal('show');
+                            },
+                        }],
+                    },
+                ],
+            }).dxDataGrid('instance');
+
+            document.getElementById('formResetPass').addEventListener('submit', evt => {
+                evt.preventDefault();
+                let tenTruyCap = $('#tenTruyCapReset').val();
+                let matKhau = $('#matKhauReset').val();
+
+                const dt = {
+                    "UserName": tenTruyCap.trim(),
+                    "Password": matKhau.trim(),
+                };
+
+                try {
+                    fetch('/api/AccountApi/UpdateAccountPassword', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(dt)
+                    }).then(res => {
+                        res.json();
+                    }).then(data => {
+                        toast.option({ message: 'Cập nhật thành công', type: 'success' });
+                        toast.show();
+                    })
+                }
+                catch (err) {
+                    toast.option({ message: err.message, type: 'error' });
+                    toast.show();
+                }
+                finally {
+                    $('#modalResetPass').modal('hide');
+                }
+            })
+        });
+    </script>
+}

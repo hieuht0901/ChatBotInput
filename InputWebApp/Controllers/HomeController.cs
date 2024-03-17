@@ -2,6 +2,7 @@
 using Domain;
 using InputWebApp.DTOs;
 using InputWebApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ using System.Security.Claims;
 
 namespace InputWebApp.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -81,6 +83,12 @@ namespace InputWebApp.Controllers
             }
         }
 
+        public IActionResult danhsachnguoidung()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
         public async Task<IActionResult> Login()
         {
             var curUser = (ClaimsIdentity)User.Identity;
@@ -94,6 +102,7 @@ namespace InputWebApp.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginDto dto)
         {
             //login functionality
