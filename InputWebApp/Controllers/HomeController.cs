@@ -88,6 +88,16 @@ namespace InputWebApp.Controllers
             return View();
         }
 
+        public IActionResult danhsachydinhnguoidung()
+        {
+            return View();
+        }
+
+        public IActionResult danhsachthucthedinhdanh()
+        {
+            return View();
+        }
+
         [AllowAnonymous]
         public async Task<IActionResult> Login()
         {

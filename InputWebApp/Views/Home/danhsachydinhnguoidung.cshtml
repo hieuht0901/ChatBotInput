@@ -1,0 +1,182 @@
+﻿<section id="configuration">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Danh sách ý định người dùng</h4>
+                    <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                    <div class="heading-elements">
+                        <ul class="list-inline mb-0">
+                            <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                            <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                            <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                            <li><a data-action="close"><i class="ft-x"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-content collapse show">
+                    <div class="card-body card-dashboard">
+                        <div id="grid" style="height: 550px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast"></div>
+</section>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(() => {
+            const URL = '/api/ydinhnguoidungapi';
+
+            const toast = $('#toast').dxToast({ displayTime: 600 }).dxToast('instance');
+
+            const ordersStore = new DevExpress.data.CustomStore({
+                key: 'id',
+                load(loadOptions) {
+                    const deferred = $.Deferred();
+                    const args = {};
+
+                    [
+                        'skip',
+                        'take',
+                        'requireTotalCount',
+                        'requireGroupCount',
+                        'sort',
+                        'filter',
+                        'totalSummary',
+                        'group',
+                        'groupSummary',
+                    ].forEach((i) => {
+                        if (i in loadOptions && isNotEmpty(loadOptions[i])) {
+                            args[i] = JSON.stringify(loadOptions[i]);
+                        }
+                    });
+                    $.ajax({
+                        url: `${URL}/danhsach`,
+                        dataType: 'json',
+                        data: args,
+                        success(result) {
+                            console.log(result);
+                            deferred.resolve(result);
+                        },
+                        error() {
+                            deferred.reject('Data Loading Error');
+                        },
+                    });
+
+                    return deferred.promise();
+                },
+                insert(values) {
+                    const d = $.Deferred();
+
+                    $.ajax(`${URL}/themmoi`, {
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(values),
+                        cache: false,
+                        xhrFields: { withCredentials: true },
+                    }).done((result) => {
+                        d.resolve(result);
+                        toast.option({ message: 'Thêm mới thành công', type: 'success' });
+                        toast.show();
+                    }).fail((xhr) => {
+                        d.reject(xhr.responseText ? xhr.responseText : xhr.statusText);
+                        toast.option({ message: xhr.responseText ? xhr.responseText : xhr.statusText, type: 'error' });
+                        toast.show();
+                    });
+
+                    return d.promise();
+                },
+                update(key, values) {
+                    console.log(values);
+                    const curGrid = $('#grid').dxDataGrid("instance");
+                    const curRow = curGrid.getRowIndexByKey(key);
+                    const curData = curGrid.getVisibleRows()[curRow];
+                    const d = $.Deferred();
+
+                    $.ajax(`${URL}/capnhat`, {
+                        method: 'PUT',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ ...curData.data, ...values }),
+                        cache: false,
+                        xhrFields: { withCredentials: true },
+                    }).done((result) => {
+                        d.resolve(result);
+                        toast.option({ message: 'Cập nhật thành công', type: 'success' });
+                        toast.show();
+                    }).fail((xhr) => {
+                        d.reject(xhr.responseText ? xhr.responseText : xhr.statusText);
+                        toast.option({ message: xhr.responseText ? xhr.responseText : xhr.statusText, type: 'error' });
+                        toast.show();
+                    });
+
+                    return d.promise();
+                },
+                remove(key) {
+                    console.log(key)
+                    const d = $.Deferred();
+                    
+                    $.ajax(`${URL}/xoa/${key}`, {
+                        method: 'DELETE',
+                        cache: false,
+                        xhrFields: { withCredentials: true },
+                    }).done((result) => {
+                        d.resolve(result);
+                        toast.option({ message: 'Xóa thành công', type: 'success' });
+                        toast.show();
+                    }).fail((xhr) => {
+                        d.reject(xhr.responseText ? xhr.responseText : xhr.statusText);
+                        toast.option({ message: xhr.responseText ? xhr.responseText : xhr.statusText, type: 'error' });
+                        toast.show();
+                    });
+
+                    return d.promise();
+                },
+            });
+
+            const dataGrid = $('#grid').dxDataGrid({
+                dataSource: ordersStore,
+                showColumnLines: true,
+                showRowLines: true,
+                rowAlternationEnabled: true,
+                showBorders: true,
+                //remoteOperations: true,
+                scrolling: {
+                    mode: 'virtual',
+                },
+                searchPanel: {
+                    visible: true,
+                    width: 240,
+                    // placeholder: 'Tìm người dùng',
+                },
+                customizeColumns: function (columns) {
+                    columns[0].width = 150;
+                },
+                editing: {
+                    refreshMode: 'reshape',
+                    mode: 'form',
+                    allowAdding: true,
+                    allowUpdating: true,
+                    allowDeleting: true
+                },
+                columns: [
+                    {
+                        dataField: 'tieuDe',
+                        caption: 'Tiêu đề'
+                    },
+                    {
+                        dataField: 'noiDung',
+                        caption: 'Nội dung'
+                    },
+                    {
+                        dataField: 'kichHoat',
+                        caption: 'Kích hoạt'
+                    }
+                ],
+            }).dxDataGrid('instance');
+        });
+    </script>
+}

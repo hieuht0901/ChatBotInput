@@ -44,5 +44,7 @@ namespace Persistence
         public DbSet<SubNhomThuTuc> SubNhomThuTuc { get; set; }
         public DbSet<ThuTucHanhChinhCompact> ThuTucHanhChinhCompact { get; set; }
         public DbSet<ThuTucHanhChinhExtend> ThuTucHanhChinhExtend { get; set; }
+        public DbSet<YDinhNguoiDung> YDinhNguoiDung { get; set; }
+        public DbSet<ThucTheDinhDanh> ThucTheDinhDanh { get; set; }
     }
 }
