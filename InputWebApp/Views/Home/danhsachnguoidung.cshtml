@@ -172,7 +172,12 @@
                     refreshMode: 'reshape',
                     mode: 'form',
                     allowAdding: true,
-                    allowUpdating: true
+                    allowUpdating: true,
+                    texts: {
+                        cancelRowChanges: 'Hủy',
+                        saveRowChanges: 'Lưu',
+                        addRow: 'Thêm mới'
+                    }
                 },
                 onEditorPreparing: function (e) {
                     var rowData = e.row;
@@ -206,10 +211,14 @@
                     },
                     {
                         type: 'buttons',
-                        width: 110,
-                        buttons: ['edit', {
+                        width: 250,
+                        buttons: [{
+                            name: 'edit',
+                            text: 'Chỉnh sửa'
+                        }, {
                             hint: 'Reset Password',
-                            icon: 'edit',
+                            // icon: 'edit',
+                            text: 'Đổi mật khẩu',
                             onClick(e) {
                                 e.event.preventDefault();
                                 console.log(e.row.data);

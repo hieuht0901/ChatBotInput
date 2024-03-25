@@ -24,7 +24,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="txtIdx">Idx</label>
-                                            <input class="form-control border-primary" type="text" placeholder="Idx" id="txtIdx" value="@Model.Idx" />
+                                            <input class="form-control border-primary" readonly="readonly" type="text" placeholder="Idx" id="txtIdx" value="@Model.Idx" />
                                         </div>
                                     </div>
                                     <div class="col-md-8">
@@ -57,11 +57,11 @@
                                 </div>
                             </div>
                             <div class="form-actions right">
-                                <button type="button" class="btn btn-warning mr-1">
+                                @* <button type="button" class="btn btn-warning mr-1">
                                     <i class="ft-x"></i> Reset
-                                </button>
+                                </button> *@
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-check-square-o"></i> Save
+                                    <i class="fa fa-check-square-o"></i> Lưu
                                 </button>
                             </div>
                         </form>
@@ -170,11 +170,11 @@
                                 </div>
                             </div>
                             <div class="form-actions right">
-                                <button type="button" class="btn btn-warning mr-1">
+                                @* <button type="button" class="btn btn-warning mr-1">
                                     <i class="ft-x"></i> Reset
-                                </button>
+                                </button> *@
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-check-square-o"></i> Save
+                                    <i class="fa fa-check-square-o"></i> Lưu
                                 </button>
                             </div>
                         </form>
@@ -345,6 +345,14 @@
                     mode: 'row',
                     allowAdding: true,
                     allowUpdating: true,
+                    texts: {
+                        cancelRowChanges: 'Hủy',
+                        saveRowChanges: 'Lưu',
+                        addRow: 'Thêm mới',
+                        editRow: 'Sửa',
+                        deleteRow: 'Xóa',
+                        confirmDeleteMessage: 'Bạn có chắc chắn muốn xóa dữ liệu?'
+                    }
                 },
                 columns: [
                     {

@@ -198,6 +198,7 @@
                     visible: true,
                     showInfo: true,
                     showNavigationButtons: true,
+                    infoText: 'Trang thứ {0} trên {1} ({2} dòng dữ liệu)'
                 },
                 //remoteOperations: true,
                 customizeColumns: function (columns) {
@@ -209,10 +210,22 @@
                     allowAdding: true,
                     allowUpdating: true,
                     //allowDeleting: true,
+                    texts: {
+                        cancelRowChanges: 'Hủy',
+                        saveRowChanges: 'Lưu',
+                        addRow: 'Thêm mới',
+                        editRow: 'Sửa',
+                        deleteRow: 'Xóa',
+                        confirmDeleteMessage: 'Bạn có chắc chắn muốn xóa dữ liệu?'
+                    }
                 },
                 onEditorPreparing(e) {
+                    var rowData = e.row;
                     if (e.parentType === 'dataRow' && e.dataField === 'subId') {
                         e.editorOptions.disabled = (typeof e.row.data.idNhomThuTuc !== 'number');
+                    }
+                    if (e.dataField === "idx" && !rowData["isNewRow"]) {
+                        e.editorOptions.disabled = true;
                     }
                 },
                 columns: [
@@ -305,8 +318,7 @@
                         type: 'buttons',
                         width: 110,
                         buttons: ['edit', 'delete', {
-                            hint: 'Clone',
-                            icon: 'copy',
+                            text: 'Chi tiết',
                             onClick(e) {
                                 //console.log(e.row.key);
                                 //e.event.preventDefault();

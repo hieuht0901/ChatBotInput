@@ -158,9 +158,21 @@
                 editing: {
                     refreshMode: 'reshape',
                     mode: 'form',
+                    form: {
+                        colCount: 1,
+                        width: '50%'
+                    },
                     allowAdding: true,
                     allowUpdating: true,
-                    allowDeleting: true
+                    allowDeleting: true,
+                    texts: {
+                        cancelRowChanges: 'Hủy',
+                        saveRowChanges: 'Lưu',
+                        addRow: 'Thêm mới',
+                        editRow: 'Sửa',
+                        deleteRow: 'Xóa',
+                        confirmDeleteMessage: 'Bạn có chắc chắn muốn xóa dữ liệu?'
+                    }
                 },
                 columns: [
                     {
@@ -169,11 +181,18 @@
                     },
                     {
                         dataField: 'moTa',
-                        caption: 'Mô tả'
+                        caption: 'Mô tả',
+                        formItem: {
+                            editorType: 'dxTextArea',
+                            editorOptions: {
+                                height: 100,
+                            },
+                        },
                     },
                     {
                         dataField: 'kichHoat',
-                        caption: 'Kích hoạt'
+                        caption: 'Kích hoạt',
+                        width: 100
                     }
                 ],
             }).dxDataGrid('instance');

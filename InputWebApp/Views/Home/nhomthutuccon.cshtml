@@ -3,7 +3,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Danh sách thủ tục hành chính</h4>
+                    <h4 class="card-title">Danh sách nhóm lĩnh vực</h4>
                     <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                     <div class="heading-elements">
                         <ul class="list-inline mb-0">
@@ -188,6 +188,7 @@
                     visible: true,
                     showInfo: true,
                     showNavigationButtons: true,
+                    infoText: 'Trang thứ {0} trên {1} ({2} dòng dữ liệu)'
                 },
                 //remoteOperations: true,
                 customizeColumns: function (columns) {
@@ -199,6 +200,14 @@
                     allowAdding: true,
                     allowUpdating: true,
                     //allowDeleting: true,
+                    texts: {
+                        cancelRowChanges: 'Hủy',
+                        saveRowChanges: 'Lưu',
+                        addRow: 'Thêm mới',
+                        editRow: 'Sửa',
+                        deleteRow: 'Xóa',
+                        confirmDeleteMessage: 'Bạn có chắc chắn muốn xóa dữ liệu?'
+                    }
                 },
                 columns: [
                     {
