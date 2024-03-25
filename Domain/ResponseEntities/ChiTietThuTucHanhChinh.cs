@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.ResponseEntities
 {
-    public class ChiTietThuTucHanhChinh : ThuTucHanhChinh
+    public class ChiTietThuTucHanhChinh : ThuTucHanhChinh, ICloneable
     {
         public string DiaDiemTiepNhan { get; set; }
         public string ThoiGianTiepNhan { get; set; }
@@ -24,5 +24,38 @@ namespace Domain.ResponseEntities
         public string ThoiGianGiaiQuyetShort { get; set; }
         public string LePhiShort { get; set; }
         public string YeuCauShort { get; set; }
+
+        public object Clone()
+        {
+            ChiTietThuTucHanhChinh cloneObj = new ChiTietThuTucHanhChinh
+            {
+                DiaDiemTiepNhan = DiaDiemTiepNhan,
+                ThoiGianTiepNhan = ThoiGianTiepNhan,
+                TrinhTuThucHien = TrinhTuThucHien,
+                CachThucThucHien = CachThucThucHien,
+                ThoiGianGiaiQuyet = ThoiGianGiaiQuyet,
+                LePhi = LePhi,
+                YeuCau = YeuCau,
+                TenDonVi = TenDonVi,
+                IdCompact = IdCompact,
+                DiaDiemTiepNhanShort = DiaDiemTiepNhanShort,
+                ThoiGianTiepNhanShort = ThoiGianTiepNhanShort,
+                TrinhTuThucHienShort = TrinhTuThucHienShort,
+                CachThucThucHienShort = CachThucThucHienShort,
+                ThoiGianGiaiQuyetShort = ThoiGianGiaiQuyetShort,
+                LePhiShort = LePhiShort,
+                YeuCauShort = YeuCauShort,
+                ID = ID,
+                Idx = Idx,
+                IdNhomThuTuc = IdNhomThuTuc,
+                TenThuTuc = TenThuTuc,
+                Response = Response,
+                ShortResponse = ShortResponse,
+                LinkResponse = LinkResponse,
+                SubId = SubId
+            };
+
+            return cloneObj;
+        }
     }
 }

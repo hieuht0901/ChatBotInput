@@ -15,7 +15,7 @@ using System.Security.Claims;
 namespace InputWebApp.Controllers
 {
     [Authorize]
-    public class HomeController : Controller
+    public class HomeController : BaseViewController
     {
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<AppUser> _userManager;
@@ -61,26 +61,32 @@ namespace InputWebApp.Controllers
         {
             //Domain.ThuTucHanhChinh vm = await _context.ThuTucHanhChinh.FindAsync(id);
             //return View(vm);
-            using (var connettion = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
-            {
-                await connettion.OpenAsync();
-                try
-                {
-                    DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add("@pId", id);
-                    Domain.ResponseEntities.ChiTietThuTucHanhChinh result = await connettion.QueryFirstOrDefaultAsync<Domain.ResponseEntities.ChiTietThuTucHanhChinh>("spu_ThuTucHanhChinh_ChiTiet", parameters, commandType: System.Data.CommandType.StoredProcedure);
+            //using (var connettion = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            //{
+            //    await connettion.OpenAsync();
+            //    try
+            //    {
+            //        DynamicParameters parameters = new DynamicParameters();
+            //        parameters.Add("@pId", id);
+            //        Domain.ResponseEntities.ChiTietThuTucHanhChinh result = await connettion.QueryFirstOrDefaultAsync<Domain.ResponseEntities.ChiTietThuTucHanhChinh>("spu_ThuTucHanhChinh_ChiTiet", parameters, commandType: System.Data.CommandType.StoredProcedure);
 
-                    return View(result);
-                }
-                catch (Exception ex)
-                {
-                    return View(null);
-                }
-                finally
-                {
-                    await connettion.CloseAsync();
-                }
-            }
+            //        return View(result);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        return View(null);
+            //    }
+            //    finally
+            //    {
+            //        await connettion.CloseAsync();
+            //    }
+            //}
+
+            var chitietThuTucHanhChinhResult = await Mediator.Send(new Application.ThuTucHanhChinh.ChiTietThuTucHanhChinh.Query { Id = id });
+            if (!chitietThuTucHanhChinhResult.IsSuccess)
+                return View(new Domain.ResponseEntities.ChiTietThuTucHanhChinh());
+
+            return View(chitietThuTucHanhChinhResult.Value.Clone());
         }
 
         public IActionResult danhsachnguoidung()
