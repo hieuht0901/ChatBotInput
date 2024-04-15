@@ -116,5 +116,14 @@ namespace InputWebApp.Controllers
 
             return HandlerResult(updateResult);
         }
+
+        [HttpDelete("xoacauhoi/{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> xoacauhoi(Guid id)
+        {
+            var updateResult = await Mediator.Send(new Application.CauHoiApplication.Xoa.Command { Id = id });
+
+            return HandlerResult(updateResult);
+        }
     }
 }
