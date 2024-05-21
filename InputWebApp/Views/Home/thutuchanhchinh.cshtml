@@ -208,6 +208,7 @@
             </div>
         </div>
     </div>
+    <div id="toast"></div>
 </section>
 
 @section Scripts {
@@ -215,6 +216,7 @@
         $(() => {
 
             const URL = '/api/ThuThuHanhChinh';
+            const toast = $('#toast').dxToast({ displayTime: 600 }).dxToast('instance');
 
             fetch(`${URL}/danhsachnhomthutuc`).then(res => res.json())
                 .then(data => {
@@ -294,8 +296,10 @@
                         cache: false,
                         xhrFields: { withCredentials: true },
                     }).done((result) => {
-                        console.log(result)
+                        // console.log(result)
                         d.resolve(result);
+                        toast.option({ message: 'Thêm mới thành công', type: 'success' });
+                        toast.show();
                     }).fail((xhr) => {
                         d.reject(xhr.responseText ? xhr.responseText : xhr.statusText);
                     });
@@ -312,10 +316,32 @@
                         cache: false,
                         xhrFields: { withCredentials: true },
                     }).done((result) => {
-                        console.log(result)
+                        // console.log(result)
                         d.resolve(result);
+                        toast.option({ message: 'Cập nhật thành công', type: 'success' });
+                        toast.show();
                     }).fail((xhr) => {
                         d.reject(xhr.responseText ? xhr.responseText : xhr.statusText);
+                    });
+
+                    return d.promise();
+                },
+                remove(key) {
+                    console.log(key)
+                    const d = $.Deferred();
+
+                    $.ajax(`${URL}/xoacauhoi/${key}`, {
+                        method: 'DELETE',
+                        cache: false,
+                        xhrFields: { withCredentials: true },
+                    }).done((result) => {
+                        d.resolve(result);
+                        toast.option({ message: 'Xóa thành công', type: 'success' });
+                        toast.show();
+                    }).fail((xhr) => {
+                        d.reject(xhr.responseText ? xhr.responseText : xhr.statusText);
+                        toast.option({ message: xhr.responseText ? xhr.responseText : xhr.statusText, type: 'error' });
+                        toast.show();
                     });
 
                     return d.promise();
@@ -345,6 +371,7 @@
                     mode: 'row',
                     allowAdding: true,
                     allowUpdating: true,
+                    allowDeleting: true,
                     texts: {
                         cancelRowChanges: 'Hủy',
                         saveRowChanges: 'Lưu',
@@ -353,6 +380,23 @@
                         deleteRow: 'Xóa',
                         confirmDeleteMessage: 'Bạn có chắc chắn muốn xóa dữ liệu?'
                     }
+                },
+                export: {
+                    enabled: true
+                },
+                onExporting(e) {
+                    const workbook = new ExcelJS.Workbook();
+                    const worksheet = workbook.addWorksheet('Employees');
+
+                    DevExpress.excelExporter.exportDataGrid({
+                        component: e.component,
+                        worksheet,
+                        autoFilterEnabled: false,
+                    }).then(() => {
+                        workbook.xlsx.writeBuffer().then((buffer) => {
+                            saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'Employees.xlsx');
+                        });
+                    });
                 },
                 columns: [
                     {
