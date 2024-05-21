@@ -124,6 +124,12 @@ namespace InputWebApp.Controllers
             //login functionality
             var user = await _userManager.FindByNameAsync(dto.Username);
 
+            if (user == null)
+            {
+                ViewData["ErrorMessage"] = $"Không tồn tại tài khoản có tên đăng nhập là {dto.Username}";
+                return View();
+            }
+
             if (user != null)
             {
                 //sign in
@@ -137,7 +143,7 @@ namespace InputWebApp.Controllers
 
                 if (!signInResult.Succeeded)
                 {
-                    ViewData["ErrorMessage"] = "Tên tài khoản hoặc mật khẩu không chính xác, vui lòng thử lại!";
+                    ViewData["ErrorMessage"] = "Mật khẩu không chính xác, vui lòng thử lại!";
                     return View();
                 }
 
