@@ -31,6 +31,10 @@
         $(() => {
             const URL = '/api/ydinhnguoidungapi';
 
+            const isBlank = (str) => {
+                return (!str || /^\s*$/.test(str));
+            }
+
             const toast = $('#toast').dxToast({ displayTime: 600 }).dxToast('instance');
 
             const ordersStore = new DevExpress.data.CustomStore({
@@ -72,6 +76,13 @@
                 insert(values) {
                     const d = $.Deferred();
 
+                    if (!values.tieuDe || isBlank(values.tieuDe)) {
+                        d.reject("Tiêu đề không được rỗng");
+                        toast.option({ message: "Tiêu đề không được rỗng", type: 'error' });
+                        toast.show();
+                        return d.promise();
+                    }
+
                     $.ajax(`${URL}/themmoi`, {
                         method: 'POST',
                         contentType: 'application/json',
@@ -91,11 +102,19 @@
                     return d.promise();
                 },
                 update(key, values) {
-                    console.log(values);
                     const curGrid = $('#grid').dxDataGrid("instance");
                     const curRow = curGrid.getRowIndexByKey(key);
                     const curData = curGrid.getVisibleRows()[curRow];
                     const d = $.Deferred();
+
+                    const newValue = { ...curData.data, ...values };
+                    // console.log(newValue);
+                    if (!newValue.tieuDe || isBlank(newValue.tieuDe)) {
+                        d.reject("Tiêu đề không được rỗng");
+                        toast.option({ message: "Tiêu đề không được rỗng", type: 'error' });
+                        toast.show();
+                        return d.promise();
+                    }
 
                     $.ajax(`${URL}/capnhat`, {
                         method: 'PUT',

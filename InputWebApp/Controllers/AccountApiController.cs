@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace InputWebApp.Controllers
 {
@@ -41,6 +42,20 @@ namespace InputWebApp.Controllers
                 LockoutEnd = new DateTime(2000, 12, 31)
             };
 
+            var existUser = await _userManager.FindByNameAsync(newUser.UserName);
+
+            if (existUser != null)
+            {
+                return BadRequest($"Đã tồn tại người dùng có tên đăng nhập là {newUser.UserName}");
+            }
+
+            existUser = await _userManager.FindByEmailAsync(newUser.Email);
+
+            if (existUser != null)
+            {
+                return BadRequest($"Đã tồn tại người dùng có email là {newUser.Email}");
+            }
+
             var createResult = await _userManager.CreateAsync(newUser, _request.Password);
 
             if (!createResult.Succeeded)
@@ -68,6 +83,13 @@ namespace InputWebApp.Controllers
             {
                 return BadRequest($"Không tìm thấy tài khoản có tên đăng nhập là {_request.UserName}");
             }
+
+            var existUser = await _userManager.FindByEmailAsync(_request.Email);
+            if (existUser != null && existUser.UserName != appUser.UserName)
+            {
+                return BadRequest($"Đã tồn tại người dùng có email là {_request.Email}");
+            }
+
 
             appUser.DisplayName = _request.DisplayName;
             appUser.Email = _request.Email;

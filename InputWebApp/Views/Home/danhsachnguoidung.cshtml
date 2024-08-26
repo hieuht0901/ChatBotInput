@@ -106,6 +106,34 @@
                 insert(values) {
                     const d = $.Deferred();
 
+                    if (!values.userName) {
+                        d.reject("Tên đăng nhập không được trống");
+                        toast.option({ message: "Tên đăng nhập không được trống", type: 'error' });
+                        toast.show();
+                        return d.promise();
+                    }
+
+                    if (!values.password) {
+                        d.reject("Mật khẩu không được trống");
+                        toast.option({ message: "Mật khẩu không được trống", type: 'error' });
+                        toast.show();
+                        return d.promise();
+                    }
+
+                    if (!values.email) {
+                        d.reject("Email không được trống");
+                        toast.option({ message: "Email không được trống", type: 'error' });
+                        toast.show();
+                        return d.promise();
+                    }
+
+                    if (!values.displayName) {
+                        d.reject("Tên đầy đủ không được trống");
+                        toast.option({ message: "Tên đầy đủ không được trống", type: 'error' });
+                        toast.show();
+                        return d.promise();
+                    }
+
                     $.ajax(`${URL}/createnewaccount`, {
                         method: 'POST',
                         contentType: 'application/json',
