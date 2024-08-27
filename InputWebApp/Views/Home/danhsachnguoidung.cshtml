@@ -159,7 +159,7 @@
                     const d = $.Deferred();
 
                     $.ajax(`${URL}/UpdateAccount`, {
-                        method: 'PUT',
+                        method: 'POST',
                         contentType: 'application/json',
                         data: JSON.stringify({ ...curData.data, ...values }),
                         cache: false,
@@ -270,7 +270,7 @@
 
                 try {
                     fetch('/api/AccountApi/UpdateAccountPassword', {
-                        method: 'PUT',
+                        method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },

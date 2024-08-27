@@ -310,7 +310,7 @@
                     const d = $.Deferred();
 
                     $.ajax(`${URL}/capnhatcauhoi`, {
-                        method: 'PUT',
+                        method: 'POST',
                         contentType: 'application/json',
                         data: JSON.stringify({ ...values, id: key }),
                         cache: false,
@@ -423,7 +423,7 @@
                 const txtLePhi = document.getElementById('txtLePhi');
                 const txtCachThucThucHien = document.getElementById('txtCachThucThucHien');
                 fetch(`${URL}/capnhatthutuchanhchinhcompact/${@Model.IdCompact}`, {
-                    method: 'PUT',
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -454,7 +454,7 @@
                 const txtResponse2 = document.getElementById('txtResponse2');
                 const txtLink = document.getElementById('txtLink');
                 fetch(`${URL}/capnhatthutuchanhchinh/${@Model.ID}`, {
-                    method: 'PUT',
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },

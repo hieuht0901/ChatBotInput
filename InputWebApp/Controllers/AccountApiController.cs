@@ -73,7 +73,7 @@ namespace InputWebApp.Controllers
             return Ok();
         }
 
-        [HttpPut]
+        [HttpPost]
         [Route("UpdateAccount")]
         public async Task<IActionResult> UpdateAccount([FromBody] CreateAccountDto _request)
         {
@@ -102,7 +102,7 @@ namespace InputWebApp.Controllers
             return Ok();
         }
 
-        [HttpPut]
+        [HttpPost]
         [Route("UpdateAccountPassword")]
         public async Task<IActionResult> UpdateAccountPassword([FromBody] CreateAccountDto _request)
         {

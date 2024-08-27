@@ -145,7 +145,7 @@
                     console.log(values)
 
                     $.ajax(`${URL}/capnhatnhomthutuccon/${key}`, {
-                        method: 'PUT',
+                        method: 'POST',
                         contentType: 'application/json',
                         data: JSON.stringify({ ...curData.data, ...values }),
                         cache: false,

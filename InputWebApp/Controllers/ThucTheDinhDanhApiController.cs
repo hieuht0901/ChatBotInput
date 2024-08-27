@@ -27,7 +27,7 @@ namespace InputWebApp.Controllers
             return HandlerResult(result);
         }
 
-        [HttpPut("capnhat")]
+        [HttpPost("capnhat")]
         [AllowAnonymous]
         public async Task<IActionResult> capnhat([FromBody] ThucTheDinhDanh thucthe)
         {

@@ -42,7 +42,7 @@ namespace InputWebApp.Controllers
             return HandlerResult(result);
         }
 
-        [HttpPut("capnhatnhomthutuccon/{id}")]
+        [HttpPost("capnhatnhomthutuccon/{id}")]
         public async Task<IActionResult> CapNhatNhomThuTucCon([FromBody] SubNhomThuTuc nhomThuTuc, int id)
         {
             var result = await Mediator.Send(new Application.NhomThuTucCon.CapNhat.Command { Entity = nhomThuTuc, Id = id });
@@ -57,7 +57,7 @@ namespace InputWebApp.Controllers
             return HandlerResult(insertResult);
         }
 
-        [HttpPut("capnhatnhomthutuc/{id}")]
+        [HttpPost("capnhatnhomthutuc/{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> capnhatnhomthutuc([FromBody] NhomThuTuc nhomThuTuc, int id)
         {
@@ -74,7 +74,7 @@ namespace InputWebApp.Controllers
             return HandlerResult(insertResult);
         }
 
-        [HttpPut("capnhatthutuchanhchinh/{id}")]
+        [HttpPost("capnhatthutuchanhchinh/{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> capnhatthutuchanhchinh([FromBody] Domain.ThuTucHanhChinh _request, int id)
         {
@@ -83,7 +83,7 @@ namespace InputWebApp.Controllers
             return HandlerResult(insertResult);
         }
 
-        [HttpPut("capnhatthutuchanhchinhcompact/{id}")]
+        [HttpPost("capnhatthutuchanhchinhcompact/{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> capnhatthutuchanhchinhcompact([FromBody] ThuTucHanhChinhCompact _request, int id)
         {
@@ -108,7 +108,7 @@ namespace InputWebApp.Controllers
             return HandlerResult(lst);
         }
 
-        [HttpPut("capnhatcauhoi")]
+        [HttpPost("capnhatcauhoi")]
         [AllowAnonymous]
         public async Task<IActionResult> capnhatcauhoi([FromBody] CauHoi _request)
         {

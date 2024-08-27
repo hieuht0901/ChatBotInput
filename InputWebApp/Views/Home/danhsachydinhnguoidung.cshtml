@@ -117,7 +117,7 @@
                     }
 
                     $.ajax(`${URL}/capnhat`, {
-                        method: 'PUT',
+                        method: 'POST',
                         contentType: 'application/json',
                         data: JSON.stringify({ ...curData.data, ...values }),
                         cache: false,
