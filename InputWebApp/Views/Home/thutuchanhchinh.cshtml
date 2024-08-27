@@ -331,7 +331,7 @@
                     const d = $.Deferred();
 
                     $.ajax(`${URL}/xoacauhoi/${key}`, {
-                        method: 'DELETE',
+                        method: 'POST',
                         cache: false,
                         xhrFields: { withCredentials: true },
                     }).done((result) => {

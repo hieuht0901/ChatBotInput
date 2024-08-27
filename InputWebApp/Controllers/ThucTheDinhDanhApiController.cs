@@ -35,7 +35,7 @@ namespace InputWebApp.Controllers
             return HandlerResult(result);
         }
 
-        [HttpDelete("xoa/{id}")]
+        [HttpPost("xoa/{id}")]
         public async Task<IActionResult> xoa(Guid id)
         {
             var result = await Mediator.Send(new Application.ThucTheDinhDanh.Xoa.Command { Id = id });

@@ -117,7 +117,7 @@ namespace InputWebApp.Controllers
             return HandlerResult(updateResult);
         }
 
-        [HttpDelete("xoacauhoi/{id}")]
+        [HttpPost("xoacauhoi/{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> xoacauhoi(Guid id)
         {
