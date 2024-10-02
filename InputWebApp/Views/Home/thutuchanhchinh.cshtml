@@ -440,9 +440,13 @@
                         return res.json()
                     }
                 }).then(data => {
-                    alert('Chỉnh sửa thành công')
+                    // alert('Chỉnh sửa thành công')
+                    toast.option({ message: 'Chỉnh sửa thành công', type: 'success' });
+                    toast.show();
                 }).catch(err => {
-                    alert(err.message);
+                    // alert(err.message);
+                    toast.option({ message: err.message, type: 'error' });
+                    toast.show();
                 })
             });
             document.getElementById('mForm').addEventListener('submit', evt => {
@@ -472,9 +476,13 @@
                         return res.json()
                     }
                 }).then(data => {
-                    alert('Chỉnh sửa thành công')
+                    // alert('Chỉnh sửa thành công')
+                    toast.option({ message: 'Chỉnh sửa thành công', type: 'success' });
+                    toast.show();
                 }).catch(err => {
-                    alert(err.message);
+                    // alert(err.message);
+                    toast.option({ message: err.message, type: 'error' });
+                    toast.show();
                 })
             })
         });

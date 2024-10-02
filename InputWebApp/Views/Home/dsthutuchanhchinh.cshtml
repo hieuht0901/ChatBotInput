@@ -27,12 +27,14 @@
             </div>
         </div>
     </div>
+    <div id="toast"></div>
 </section>
 
 @section Scripts {
     <script type="text/javascript">
         $(() => {
             const URL = '/api/ThuThuHanhChinh';
+            const toast = $('#toast').dxToast({ displayTime: 600 }).dxToast('instance');
 
             function sendRequest(url, method = 'GET', data) {
                 const d = $.Deferred();
@@ -136,8 +138,12 @@
                     }).done((result) => {
                         console.log(result)
                         d.resolve(result);
+                        toast.option({ message: 'Thêm mới thành công', type: 'success' });
+                        toast.show();
                     }).fail((xhr) => {
                         d.reject(xhr.responseText ? xhr.responseText : xhr.statusText);
+                        toast.option({ message: xhr.responseText ? xhr.responseText : xhr.statusText, type: 'error' });
+                        toast.show();
                     });
 
                     return d.promise();
@@ -152,16 +158,20 @@
                     const d = $.Deferred();
 
                     $.ajax(`${URL}/capnhatthutuchanhchinh/${key}`, {
-                        method: 'PUT',
+                        method: 'POST',
                         contentType: 'application/json',
                         data: JSON.stringify({ ...curData.data, ...values }),
                         cache: false,
                         xhrFields: { withCredentials: true },
                     }).done((result) => {
-                        console.log(result)
+                        // console.log(result)
                         d.resolve(result);
+                        toast.option({ message: 'Cập nhật thành công', type: 'success' });
+                        toast.show();
                     }).fail((xhr) => {
                         d.reject(xhr.responseText ? xhr.responseText : xhr.statusText);
+                        toast.option({ message: xhr.responseText ? xhr.responseText : xhr.statusText, type: 'error' });
+                        toast.show();
                     });
 
                     return d.promise();
