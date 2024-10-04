@@ -16,5 +16,9 @@ namespace Domain
         public int? CreatedBy {  get; set; }
         public DateTime? UpdatedDate {  get; set; }
         public int? UpdatedBy { get; set; }
+        public string SystemId {  get; set; }
+        public string TuKhoa {  get; set; }
+        public string TraLoi {  get; set; }
+        public string GhiChu {  get; set; }
     }
 }
