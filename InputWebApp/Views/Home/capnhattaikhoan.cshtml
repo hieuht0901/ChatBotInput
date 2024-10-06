@@ -1,0 +1,107 @@
+﻿@model Domain.AppUser;
+
+<section id="basic-form-layouts">
+    <div class="row justify-content-md-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title" id="basic-layout-colored-form-control">Thông tin người dùng</h4>
+                    <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                    <div class="heading-elements">
+                        <ul class="list-inline mb-0">
+                            <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                            <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                            <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                            <li><a data-action="close"><i class="ft-x"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-content collapse show">
+                    <div class="card-body">
+                        <form class="form" id="mForm">
+                            <div class="form-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="txtTenThuTuc">Tên đăng nhập</label>
+                                            <input class="form-control border-primary" readonly="readonly" type="text" placeholder="Tên đăng nhập" id="txtUsername" value="@Model.UserName" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="txtResponse">Tên đầy đủ</label>
+                                            <input class="form-control border-primary" type="text" placeholder="Tên đầy đủ" id="txtFullname" value="@Model.DisplayName" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="txtResponse2">Email</label>
+                                            <input class="form-control border-primary" type="email" placeholder="Email" id="txtEmail" value="@Model.Email" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="txtLink">Mật khẩu</label>
+                                            <input class="form-control border-primary" type="password" placeholder="Mật khẩu" id="txtPassword" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions right">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-check-square-o"></i> Lưu
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="toast"></div>
+</section>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(() => {
+
+            const URL = '/api/accountapi';
+            const toast = $('#toast').dxToast({ displayTime: 600 }).dxToast('instance');
+
+            document.getElementById('mForm').addEventListener('submit', evt => {
+                evt.preventDefault();
+                const txtUsername = document.getElementById('txtUsername');
+                const txtFullname = document.getElementById('txtFullname');
+                const txtEmail = document.getElementById('txtEmail');
+                const txtPassword = document.getElementById('txtPassword');
+
+                fetch(`${URL}/UpdateAccountInfo`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        UserName: txtUsername,
+                        Password: txtPassword.value,
+                        Email: txtEmail.value,
+                        DisplayName: txtFullname.value
+                    })
+                }).then(res => {
+                    if (res.ok) {
+                        return res.json()
+                    }
+                }).then(data => {
+                    // alert('Chỉnh sửa thành công')
+                    toast.option({ message: 'Chỉnh sửa thành công', type: 'success' });
+                    toast.show();
+                }).catch(err => {
+                    // alert(err.message);
+                    toast.option({ message: err.message, type: 'error' });
+                    toast.show();
+                })
+            })
+        });
+    </script>
+}

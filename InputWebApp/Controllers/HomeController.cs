@@ -104,6 +104,14 @@ namespace InputWebApp.Controllers
             return View();
         }
 
+        [Authorize]
+        public async Task<IActionResult> capnhattaikhoan()
+        {
+            var curUser = (ClaimsIdentity)User.Identity;
+            AppUser user = curUser != null && curUser.Name != null ? await _userManager.FindByNameAsync(curUser.Name) : null;
+            return View(user);
+        }
+
         [AllowAnonymous]
         public async Task<IActionResult> Login()
         {

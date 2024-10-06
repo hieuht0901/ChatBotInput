@@ -16,7 +16,7 @@
                 </div>
                 <div class="card-content collapse show">
                     <div class="card-body card-dashboard">
-                        <div id="grid" style="height: 550px"></div>
+                        <div id="grid" style=""></div>
                     </div>
                 </div>
             </div>
@@ -193,21 +193,39 @@
                         confirmDeleteMessage: 'Bạn có chắc chắn muốn xóa dữ liệu?'
                     }
                 },
+                // onEditorPreparing: function (e) {
+                //     var rowData = e.row;
+                //     if ((e.dataField === "userName" || e.dataField === "password") && !rowData["isNewRow"]) {
+                //         e.editorOptions.disabled = true;
+                //     }
+                // },
                 columns: [
+                    {
+                        dataField: 'systemId',
+                        caption: 'Index'
+                    },
                     {
                         dataField: 'tenThucThe',
                         caption: 'Tên thực thể'
                     },
                     {
-                        dataField: 'moTa',
-                        caption: 'Mô tả',
+                        dataField: 'tuKhoa',
+                        caption: 'Từ khóa'
+                    },
+                    {
+                        dataField: 'traLoi',
+                        caption: 'Trả lời'
+                    },
+                    {
+                        dataField: 'ghiChu',
+                        caption: 'Ghi chú',
                         formItem: {
                             editorType: 'dxTextArea',
                             editorOptions: {
                                 height: 100,
                             },
                         },
-                        allowEditing: false
+                        visible: false
                     },
                     {
                         dataField: 'kichHoat',

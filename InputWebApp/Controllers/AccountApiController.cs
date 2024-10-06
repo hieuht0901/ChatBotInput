@@ -103,6 +103,50 @@ namespace InputWebApp.Controllers
         }
 
         [HttpPost]
+        [Route("UpdateAccountInfo")]
+        public async Task<IActionResult> UpdateAccountInfo([FromBody] CreateAccountDto _request)
+        {
+            AppUser appUser = await _userManager.FindByNameAsync(_request.UserName);
+
+            if (appUser == null)
+            {
+                return BadRequest($"Không tìm thấy tài khoản có tên đăng nhập là {_request.UserName}");
+            }
+
+            var existUser = await _userManager.FindByEmailAsync(_request.Email);
+            if (existUser != null && existUser.UserName != appUser.UserName)
+            {
+                return BadRequest($"Đã tồn tại người dùng có email là {_request.Email}");
+            }
+
+
+            appUser.DisplayName = _request.DisplayName;
+            appUser.Email = _request.Email;
+            var updateResult = await _userManager.UpdateAsync(appUser);
+            if (!updateResult.Succeeded)
+            {
+                return BadRequest(updateResult);
+            }
+
+            if (!string.IsNullOrEmpty(_request.Password)) {
+                var pToken = await _userManager.GeneratePasswordResetTokenAsync(appUser);
+                var updatePasswordResult = await _userManager.ResetPasswordAsync(appUser, pToken, _request.Password);
+
+                if (!updatePasswordResult.Succeeded)
+                {
+                    List<string> errors = new List<string>();
+                    foreach (var error in updatePasswordResult.Errors)
+                    {
+                        errors.Add(error.Description);
+                    }
+                    return BadRequest(string.Join(". ", errors));
+                }
+            }
+
+            return Ok();
+        }
+
+        [HttpPost]
         [Route("UpdateAccountPassword")]
         public async Task<IActionResult> UpdateAccountPassword([FromBody] CreateAccountDto _request)
         {

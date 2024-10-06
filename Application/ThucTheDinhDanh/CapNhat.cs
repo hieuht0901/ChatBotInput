@@ -37,6 +37,10 @@ namespace Application.ThucTheDinhDanh
                     }
                     thucthe.TenThucThe = request.Entity.TenThucThe;
                     thucthe.MoTa = request.Entity.MoTa;
+                    thucthe.GhiChu = request.Entity.GhiChu;
+                    thucthe.SystemId = request.Entity.SystemId;
+                    thucthe.TuKhoa = request.Entity.TuKhoa;
+                    thucthe.TraLoi = request.Entity.TraLoi;
                     thucthe.UpdatedDate = DateTime.Now;
                     thucthe.KichHoat = request.Entity.KichHoat;
                     int rowUpdated = await _context.SaveChangesAsync();
