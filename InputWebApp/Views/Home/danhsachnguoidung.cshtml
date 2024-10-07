@@ -176,6 +176,25 @@
 
                     return d.promise();
                 },
+                remove(key) {
+                    const d = $.Deferred();
+
+                    $.ajax(`${URL}/deleteaccount/${key}`, {
+                        method: 'POST',
+                        cache: false,
+                        xhrFields: { withCredentials: true },
+                    }).done((result) => {
+                        d.resolve(result);
+                        toast.option({ message: 'Xóa thành công', type: 'success' });
+                        toast.show();
+                    }).fail((xhr) => {
+                        d.reject(xhr.responseText ? xhr.responseText : xhr.statusText);
+                        toast.option({ message: xhr.responseText ? xhr.responseText : xhr.statusText, type: 'error' });
+                        toast.show();
+                    });
+
+                    return d.promise();
+                },
             });
 
             const dataGrid = $('#grid').dxDataGrid({
@@ -201,10 +220,14 @@
                     mode: 'form',
                     allowAdding: true,
                     allowUpdating: true,
+                    allowDeleting: true,
                     texts: {
                         cancelRowChanges: 'Hủy',
                         saveRowChanges: 'Lưu',
-                        addRow: 'Thêm mới'
+                        addRow: 'Thêm mới',
+                        editRow: 'Sửa',
+                        deleteRow: 'Xóa',
+                        confirmDeleteMessage: 'Bạn có chắc chắn muốn xóa dữ liệu?'
                     }
                 },
                 onEditorPreparing: function (e) {
@@ -253,6 +276,9 @@
                                 document.getElementById('tenTruyCapReset').value = e.row.data.userName;
                                 $('#modalResetPass').modal('show');
                             },
+                        }, {
+                            name: 'delete',
+                            text: 'Xóa'
                         }],
                     },
                 ],

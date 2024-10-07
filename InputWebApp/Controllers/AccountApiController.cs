@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Security.Claims;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace InputWebApp.Controllers
@@ -25,7 +26,7 @@ namespace InputWebApp.Controllers
         [Route("getallusers")]
         public async Task<IActionResult> GetAllUsers(string keyword = "")
         {
-            var result = await _userManager.Users.Where(o => (o.UserName.Contains(keyword) || o.DisplayName.Contains(keyword))).ToListAsync();
+            var result = await _userManager.Users.Where(o => (o.UserName.Contains(keyword) || o.DisplayName.Contains(keyword)) && o.UserName != "host").ToListAsync();
             return Ok(result);
         }
 
@@ -100,6 +101,39 @@ namespace InputWebApp.Controllers
             }
 
             return Ok();
+        }
+
+        [HttpPost, HttpDelete]
+        [Route("deleteaccount/{id}")]
+        public async Task<IActionResult> DeleteAccount(string id)
+        {
+            var curUser = (ClaimsIdentity)User.Identity;
+            var curUsername = curUser.Name;
+            AppUser appUser = await _userManager.FindByIdAsync(id);
+
+            if (appUser == null)
+            {
+                return BadRequest("Không tìm thấy thông tin người dùng");
+            }
+
+            if (appUser.UserName == curUsername) {
+                return BadRequest("Không thể xóa user hiện tại");
+            }
+
+            var createResult = await _userManager.DeleteAsync(appUser);
+
+            if (!createResult.Succeeded)
+            {
+                List<string> errors = new List<string>();
+                foreach (var error in createResult.Errors)
+                {
+                    errors.Add(error.Description);
+                }
+                return BadRequest(string.Join(". ", errors));
+            }
+
+            return Ok();
+
         }
 
         [HttpPost]
