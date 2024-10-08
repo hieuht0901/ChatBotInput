@@ -73,22 +73,25 @@
             document.getElementById('mForm').addEventListener('submit', evt => {
                 evt.preventDefault();
                 const txtUsername = document.getElementById('txtUsername');
-                const txtFullname = document.getElementById('txtFullname');
-                const txtEmail = document.getElementById('txtEmail');
-                const txtPassword = document.getElementById('txtPassword');
+                const txtFullname = document.getElementById('txtFullname')
+                const txtEmail = document.getElementById('txtEmail')
+                const txtPassword = document.getElementById('txtPassword')
 
-                fetch(`${URL}/UpdateAccountInfo`, {
+                const mData = {
+                    userName: txtUsername.value,
+                    password: txtPassword.value,
+                    email: txtEmail.value,
+                    displayName: txtFullname.value
+                };
+
+                fetch(`/api/accountapi/UpdateAccountInfo`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({
-                        UserName: txtUsername,
-                        Password: txtPassword.value,
-                        Email: txtEmail.value,
-                        DisplayName: txtFullname.value
-                    })
+                    body: JSON.stringify(mData)
                 }).then(res => {
+                    console.log(res)
                     if (res.ok) {
                         return res.json()
                     }
